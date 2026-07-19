@@ -10,6 +10,8 @@
  * CORP-free headers and Range passthrough.
  */
 
+import { selectFolderLister } from './folderListing'
+
 type FetchLike = (input: string | URL | Request, init?: RequestInit) => Promise<Response>
 
 const FILE_ID = /^[A-Za-z0-9_-]{10,64}$/
@@ -64,7 +66,11 @@ function totalFromContentRange(range: string | null): number | undefined {
   return match ? Number(match[1]) : undefined
 }
 
-export async function handleProxyRequest(request: Request, fetchImpl: FetchLike): Promise<Response> {
+export async function handleProxyRequest(
+  request: Request,
+  fetchImpl: FetchLike,
+  env: Record<string, unknown> = {},
+): Promise<Response> {
   if (request.method === 'OPTIONS') {
     return new Response(null, { status: 204, headers: CORS_HEADERS })
   }
@@ -72,10 +78,25 @@ export async function handleProxyRequest(request: Request, fetchImpl: FetchLike)
   const { pathname } = new URL(request.url)
   const stream = pathname.match(/^\/d\/(.+)$/)
   const meta = pathname.match(/^\/meta\/(.+)$/)
-  const id = (stream ?? meta)?.[1]
+  const list = pathname.match(/^\/list\/(.+)$/)
+  const id = (stream ?? meta ?? list)?.[1]
 
   if (id === undefined || !FILE_ID.test(id)) {
-    return json({ error: 'not-found', message: 'Expected /d/{fileId} or /meta/{fileId}.' }, 404)
+    return json(
+      { error: 'not-found', message: 'Expected /d/{id}, /meta/{id} or /list/{folderId}.' },
+      404,
+    )
+  }
+
+  // Folder listing: delegate to the selected lister (keyless scrape today).
+  if (list) {
+    try {
+      const entries = await selectFolderLister(env)(id, fetchImpl)
+      return json({ entries }, 200)
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Could not list that folder.'
+      return json({ error: 'list-failed', message }, 502)
+    }
   }
 
   // Metadata: a tiny ranged GET so Google returns headers (filename, size, type)

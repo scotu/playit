@@ -124,4 +124,35 @@ describe('handleProxyRequest', () => {
     const res = await handleProxyRequest(new Request('https://w.dev/'), fn)
     expect(res.status).toBe(404)
   })
+
+  it('lists a folder from the embeddedfolderview page', async () => {
+    const html = `
+      <div class="flip-entry" id="entry-${ID}">
+        <img src="https://drive-thirdparty.googleusercontent.com/128/type/audio/mpeg"/>
+        <div class="flip-entry-title">Track.mp3</div></div>`
+    const { fn, calls } = stubFetch([new Response(html, { status: 200 })])
+    const res = await handleProxyRequest(new Request(`https://w.dev/list/${ID}`), fn)
+
+    expect(res.status).toBe(200)
+    expect(res.headers.get('Access-Control-Allow-Origin')).toBe('*')
+    const body = (await res.json()) as { entries: { id: string; playable: boolean }[] }
+    expect(body.entries).toHaveLength(1)
+    expect(body.entries[0]).toMatchObject({ id: ID, playable: true })
+    expect(calls[0].url).toContain('embeddedfolderview')
+  })
+
+  it('returns 502 when the folder page cannot be fetched', async () => {
+    const { fn } = stubFetch([new Response('nope', { status: 404 })])
+    const res = await handleProxyRequest(new Request(`https://w.dev/list/${ID}`), fn)
+    expect(res.status).toBe(502)
+    const body = (await res.json()) as { error: string }
+    expect(body.error).toBe('list-failed')
+  })
+
+  it('rejects a list path that is not a drive id', async () => {
+    const { fn, calls } = stubFetch([audioResponse()])
+    const res = await handleProxyRequest(new Request('https://w.dev/list/not*valid'), fn)
+    expect(res.status).toBe(404)
+    expect(calls.length).toBe(0)
+  })
 })
