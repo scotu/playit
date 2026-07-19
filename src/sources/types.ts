@@ -27,6 +27,21 @@ export interface SourceAdapter {
   resolve(input: string): Promise<ResolvedMedia>
 }
 
+/** One item inside a Drive folder listing. Mirrors the Worker's shape. */
+export interface FolderEntry {
+  id: string
+  name: string
+  kind: 'file' | 'folder'
+  mimeType?: string
+  /** True only for audio/* and video/* — what the player can stream. */
+  playable: boolean
+}
+
+export interface FolderListing {
+  folderId: string
+  entries: FolderEntry[]
+}
+
 export type SourceErrorCode = 'unrecognised' | 'resolve-failed'
 
 export class SourceError extends Error {

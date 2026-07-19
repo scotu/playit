@@ -10,6 +10,12 @@ const URL_PATTERNS: RegExp[] = [
   new RegExp(`[?&]id=(${FILE_ID.source})`),
 ]
 
+/** Folder link shapes: /drive/folders/{id}, /drive/u/0/folders/{id}, folderview?id= */
+const FOLDER_PATTERNS: RegExp[] = [
+  new RegExp(`/folders/(${FILE_ID.source})`),
+  new RegExp(`/folderview\\?(?:[^&]*&)*id=(${FILE_ID.source})`),
+]
+
 const DRIVE_HOSTS = new Set([
   'drive.google.com',
   'drive.usercontent.google.com',
@@ -37,6 +43,44 @@ export function extractDriveFileId(input: string): string | null {
     const match = target.match(pattern)
     if (match) return match[1]
   }
+  return null
+}
+
+/** Extracts a Drive folder id from a folder share URL. Null if it is not one. */
+export function extractDriveFolderId(input: string): string | null {
+  const trimmed = input.trim()
+  if (trimmed === '') return null
+
+  let url: URL
+  try {
+    url = new URL(trimmed)
+  } catch {
+    return null
+  }
+
+  if (!DRIVE_HOSTS.has(url.hostname)) return null
+
+  const target = `${url.pathname}${url.search}`
+  for (const pattern of FOLDER_PATTERNS) {
+    const match = target.match(pattern)
+    if (match) return match[1]
+  }
+  return null
+}
+
+export type DriveTarget = { kind: 'file'; id: string } | { kind: 'folder'; id: string }
+
+/**
+ * Classifies a Drive link as a file or a folder. Folders are checked first
+ * because a folder URL must not be mistaken for a file.
+ */
+export function parseDriveTarget(input: string): DriveTarget | null {
+  const folderId = extractDriveFolderId(input)
+  if (folderId !== null) return { kind: 'folder', id: folderId }
+
+  const fileId = extractDriveFileId(input)
+  if (fileId !== null) return { kind: 'file', id: fileId }
+
   return null
 }
 
