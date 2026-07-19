@@ -1,0 +1,72 @@
+.row {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-sm);
+}
+
+.row:hover {
+  background: var(--surface);
+}
+
+.active {
+  background: var(--surface);
+}
+
+.main,
+.mainStatic {
+  display: flex;
+  flex: 1;
+  gap: var(--space-2);
+  align-items: center;
+  min-width: 0;
+  padding: var(--space-2) 0;
+  text-align: left;
+  color: var(--text);
+}
+
+.mainStatic {
+  color: var(--text-dim);
+}
+
+.active .main {
+  color: var(--accent);
+}
+
+.icon {
+  flex-shrink: 0;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.chevron {
+  margin-left: auto;
+  color: var(--text-dim);
+  font-size: 1.2rem;
+}
+
+.actions {
+  flex-shrink: 0;
+}
+
+.open {
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-dim);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.open:hover {
+  color: var(--text);
+  background: var(--surface-strong);
+}

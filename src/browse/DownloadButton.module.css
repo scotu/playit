@@ -1,0 +1,25 @@
+.button {
+  display: inline-flex;
+  gap: var(--space-1);
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  color: var(--text-dim);
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  text-decoration: none;
+}
+
+.button:hover {
+  color: var(--text);
+  background: var(--surface-strong);
+}
+
+.icon {
+  padding: var(--space-1);
+  font-size: 1rem;
+}
+
+.label {
+  font-size: 0.8rem;
+}
