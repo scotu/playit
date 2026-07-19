@@ -6,7 +6,7 @@ import { MEDIA_ERROR } from './mediaError'
 
 function Harness({ startAt }: { startAt?: number }) {
   const ref = useRef<HTMLVideoElement>(null)
-  const { state, actions } = useMediaElement(ref, { startAt, adapterId: 'google-drive-anonymous' })
+  const { state, actions } = useMediaElement(ref, { startAt, adapterId: 'google-drive-proxy' })
   return (
     <div>
       <video ref={ref} src="https://media.test/file" data-testid="media" />

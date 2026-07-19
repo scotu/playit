@@ -5,7 +5,7 @@ function mediaError(code: number): MediaError {
   return { code, message: '' } as MediaError
 }
 
-const DRIVE = 'google-drive-anonymous'
+const DRIVE = 'google-drive-proxy'
 
 describe('describeMediaError', () => {
   it('explains a src-not-supported failure on drive as sharing or size', () => {

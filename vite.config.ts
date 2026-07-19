@@ -44,5 +44,10 @@ export default defineConfig({
     globals: true,
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    env: {
+      // A proxy base so the Drive adapter resolves in tests. Individual tests
+      // override this (and global fetch) when exercising other cases.
+      VITE_DRIVE_PROXY: 'https://proxy.test',
+    },
   },
 })

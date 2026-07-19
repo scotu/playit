@@ -6,7 +6,7 @@ export interface PlaybackProblem {
   canRetry: boolean
 }
 
-const DRIVE_ADAPTER_ID = 'google-drive-anonymous'
+const DRIVE_ADAPTER_ID = 'google-drive-proxy'
 
 /**
  * MediaError codes as plain values.
@@ -25,10 +25,10 @@ export const MEDIA_ERROR = {
 /**
  * Turns a MediaError into something a person can act on.
  *
- * The important case is MEDIA_ERR_SRC_NOT_SUPPORTED on a Drive stream: the
- * element received HTML rather than media bytes. That means either the file is
- * not shared publicly, or it is large enough that Drive served its virus-scan
- * interstitial. We cannot tell which apart without an API key, so we name both.
+ * The important case is MEDIA_ERR_SRC_NOT_SUPPORTED on a Drive stream: the proxy
+ * could not hand back playable bytes. That usually means the file is no longer
+ * shared publicly, or it is large enough that Google served a virus-scan page the
+ * proxy cannot get past. We cannot tell which apart, so we name both.
  */
 export function describeMediaError(error: MediaError | null, adapterId: string): PlaybackProblem {
   if (error === null) {
@@ -68,8 +68,8 @@ export function describeMediaError(error: MediaError | null, adapterId: string):
         ? {
             title: 'This file could not be played',
             detail:
-              'Google Drive returned a web page instead of the file. Check that sharing is set to "anyone with the link".',
-            hint: 'Files larger than about 100 MB also cannot be streamed without signing in, because Drive shows a virus-scan warning first.',
+              'The playback proxy could not return this file. Check that it is still shared with "anyone with the link".',
+            hint: 'Very large files (roughly 100 MB and up) also cannot be streamed, because Google shows a virus-scan warning that requires signing in.',
             canRetry: false,
           }
         : {

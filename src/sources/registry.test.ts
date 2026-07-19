@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { resolveSource, canResolve, adapters } from './registry'
 import { SourceError } from './types'
 import type { SourceAdapter } from './types'
@@ -6,17 +6,28 @@ import type { SourceAdapter } from './types'
 const ID = '1AbC_dEfGhIjKlMnOpQrStUvWxYz01234'
 const SHARE_URL = `https://drive.google.com/file/d/${ID}/view?usp=sharing`
 
+beforeEach(() => {
+  vi.stubEnv('VITE_DRIVE_PROXY', 'https://proxy.test')
+  vi.stubGlobal(
+    'fetch',
+    vi.fn(async () => new Response(JSON.stringify({ title: 'Song.mp3' }), { status: 200 })),
+  )
+})
+
+afterEach(() => {
+  vi.unstubAllEnvs()
+  vi.unstubAllGlobals()
+})
+
 describe('resolveSource', () => {
-  it('resolves a drive share link through the drive adapter', async () => {
+  it('resolves a drive share link through the proxy adapter', async () => {
     const media = await resolveSource(SHARE_URL)
-    expect(media.adapterId).toBe('google-drive-anonymous')
-    expect(media.streamUrl).toBe(
-      `https://drive.usercontent.google.com/download?id=${ID}&export=download&confirm=t`,
-    )
+    expect(media.adapterId).toBe('google-drive-proxy')
+    expect(media.streamUrl).toBe(`https://proxy.test/d/${ID}`)
     expect(media.sourceUrl).toBe(SHARE_URL)
   })
 
-  it('reports kind as unknown because the anonymous adapter has no metadata', async () => {
+  it('reports kind as unknown because kind is decided at playback time', async () => {
     const media = await resolveSource(SHARE_URL)
     expect(media.kind).toBe('unknown')
   })

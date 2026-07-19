@@ -1,15 +1,15 @@
-import { googleDriveAnonymousAdapter } from './googleDrive'
+import { googleDriveProxyAdapter } from './googleDriveProxy'
 import { SourceError } from './types'
 import type { ResolvedMedia, SourceAdapter } from './types'
 
 /**
  * Adapters in priority order — the first one to claim an input wins.
  *
- * Adding a provider, a keyed Drive adapter, or a backend-proxied adapter is a
- * new file plus one line here. Nothing downstream of `resolveSource` knows
- * which adapter served the request.
+ * Adding a provider, a keyed Drive adapter, or a signed-in Drive adapter is a
+ * new file plus one line here. Nothing downstream of `resolveSource` knows which
+ * adapter served the request.
  */
-export const adapters: SourceAdapter[] = [googleDriveAnonymousAdapter]
+export const adapters: SourceAdapter[] = [googleDriveProxyAdapter]
 
 export function findAdapter(
   input: string,

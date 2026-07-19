@@ -1,0 +1,6 @@
+name = "playit-proxy"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# No bindings, no secrets, no state — this Worker only refetches public Drive
+# files and re-emits them with browser-embeddable headers.

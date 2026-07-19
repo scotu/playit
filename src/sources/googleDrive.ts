@@ -1,6 +1,3 @@
-import type { SourceAdapter } from './types'
-import { SourceError } from './types'
-
 const FILE_ID = /[A-Za-z0-9_-]{25,44}/
 const BARE_FILE_ID = new RegExp(`^${FILE_ID.source}$`)
 
@@ -44,41 +41,11 @@ export function extractDriveFileId(input: string): string | null {
 }
 
 /**
- * The anonymous streaming endpoint. It honours Range requests, so seeking
- * works. `confirm=t` skips the virus-scan interstitial where Drive allows it;
- * sufficiently large files still fail and are surfaced as a playback error.
+ * The anonymous streaming endpoint. Kept because the proxy Worker refetches this
+ * exact URL server-side. It cannot be used directly from the browser: Google
+ * serves it with `Cross-Origin-Resource-Policy: same-site`, which browsers refuse
+ * to embed on a cross-site page. See `googleDriveProxy.ts`.
  */
 export function buildDriveStreamUrl(fileId: string): string {
   return `https://drive.usercontent.google.com/download?id=${fileId}&export=download&confirm=t`
-}
-
-/**
- * Plays "anyone with the link" Drive files with no API key and no sign-in.
- *
- * Trade-off, chosen deliberately: no key means no metadata (hence
- * `metadata: false` and `kind: 'unknown'`), and files large enough to trigger
- * Drive's virus-scan interstitial cannot be streamed at all. A keyed or
- * backend-proxied adapter would fix both and can be registered ahead of this one.
- */
-export const googleDriveAnonymousAdapter: SourceAdapter = {
-  id: 'google-drive-anonymous',
-  label: 'Google Drive (public link)',
-  capabilities: { metadata: false, auth: false },
-
-  canHandle(input) {
-    return extractDriveFileId(input) !== null
-  },
-
-  async resolve(input) {
-    const fileId = extractDriveFileId(input)
-    if (fileId === null) {
-      throw new SourceError('unrecognised', 'That does not look like a Google Drive file link.')
-    }
-    return {
-      streamUrl: buildDriveStreamUrl(fileId),
-      adapterId: 'google-drive-anonymous',
-      sourceUrl: input.trim(),
-      kind: 'unknown',
-    }
-  },
 }

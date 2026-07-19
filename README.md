@@ -14,21 +14,37 @@ https://<user>.github.io/playit/#/play?src=<url-encoded drive link>
 
 Add `&t=90` to start 90 seconds in.
 
+## The proxy is required
+
+Playback needs the companion Cloudflare Worker in [`worker/`](worker/), and the
+app must be built with `VITE_DRIVE_PROXY` pointing at it.
+
+**Why:** Google serves the anonymous Drive download endpoint with
+`Cross-Origin-Resource-Policy: same-site`. Browsers enforce CORP and refuse the
+file to any cross-site page, so a `<video>`/`<audio>` element on GitHub Pages
+cannot load it directly — it fails with a "format" error even for a small,
+correctly shared file. Fetching server-side is not subject to CORP, so the Worker
+refetches the file and re-emits it with embeddable headers (and, as a bonus, the
+real filename). See [`worker/README.md`](worker/README.md) to deploy it, then set
+`VITE_DRIVE_PROXY` (a repository variable for CI, or a local `.env`).
+
+Without the proxy configured, the app loads and recognises links but reports that
+playback is not configured.
+
 ## Limitations
 
-These follow from the app using Drive's anonymous endpoint, with no API key
-and no sign-in:
+- **Files larger than roughly 100 MB will not play.** Google shows a virus-scan
+  warning page instead of the file, and the proxy cannot get past it without an
+  authenticated request; it returns a clear error in that case.
+- Audio and video are told apart by inspecting the decoded stream, not by file
+  extension.
 
-- **Files larger than roughly 100 MB will not play.** Drive serves a
-  virus-scan warning page instead of the file, and there is no way past it
-  without an authenticated request.
-- **No titles.** The anonymous endpoint returns no metadata, so a file shows
-  as "Audio" rather than its name.
-- Audio and video are told apart by inspecting the decoded stream, not by
-  file extension.
+## Adding a source
 
-A future adapter using the Drive API — with the key held by a backend, or the
-user signed in — fixes all three. See `src/sources/registry.ts`.
+Implement `SourceAdapter` from `src/sources/types.ts` and register it in
+`src/sources/registry.ts`. Adapters are tried in order; the first to claim an
+input wins. Nothing else in the app needs to change. A keyed Drive API adapter or
+a signed-in adapter would slot in the same way.
 
 ## Adding a source
 

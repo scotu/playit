@@ -7,7 +7,7 @@ import type { ResolvedMedia } from '../sources/types'
 
 const MEDIA: ResolvedMedia = {
   streamUrl: 'https://drive.usercontent.google.com/download?id=abc&export=download&confirm=t',
-  adapterId: 'google-drive-anonymous',
+  adapterId: 'google-drive-proxy',
   sourceUrl: 'https://drive.google.com/file/d/abc/view',
   kind: 'unknown',
 }
