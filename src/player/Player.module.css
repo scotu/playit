@@ -7,6 +7,12 @@
   background: var(--bg);
 }
 
+/* Paned layout: fill the grid cell the sidebar layout gives us, not the viewport. */
+.shell.paned {
+  height: 100%;
+  min-height: 0;
+}
+
 .shell.idle {
   cursor: none;
 }

@@ -135,4 +135,16 @@ describe('useMediaElement', () => {
     })
     expect(media().muted).toBe(true)
   })
+
+  it('calls onEnded when playback finishes', () => {
+    const onEnded = vi.fn()
+    function EndedHarness() {
+      const ref = useRef<HTMLVideoElement>(null)
+      useMediaElement(ref, { adapterId: 'google-drive-proxy', onEnded })
+      return <video ref={ref} src="https://media.test/file" data-testid="media" />
+    }
+    render(<EndedHarness />)
+    emit(media(), 'ended')
+    expect(onEnded).toHaveBeenCalledOnce()
+  })
 })

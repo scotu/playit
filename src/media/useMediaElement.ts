@@ -37,6 +37,8 @@ export interface UseMediaElementOptions {
   startAt?: number
   /** Used to tailor error copy to the source. */
   adapterId: string
+  /** Called when playback reaches the end — used to advance a playlist. */
+  onEnded?: () => void
 }
 
 const INITIAL: MediaState = {
@@ -59,6 +61,13 @@ export function useMediaElement(
   const { startAt, adapterId } = options
   const [state, setState] = useState<MediaState>(INITIAL)
   const startAppliedRef = useRef(false)
+
+  // Kept in a ref so the listener effect stays stable across renders while still
+  // calling the latest callback.
+  const onEndedRef = useRef(options.onEnded)
+  useEffect(() => {
+    onEndedRef.current = options.onEnded
+  }, [options.onEnded])
 
   const patch = useCallback((next: Partial<MediaState>) => {
     setState((current) => ({ ...current, ...next }))
@@ -85,7 +94,10 @@ export function useMediaElement(
     const onDurationChange = () => patch({ duration: element.duration })
     const onPlay = () => patch({ playing: true })
     const onPause = () => patch({ playing: false })
-    const onEnded = () => patch({ playing: false })
+    const onEnded = () => {
+      patch({ playing: false })
+      onEndedRef.current?.()
+    }
     const onWaiting = () => patch({ status: 'loading' })
     const onPlaying = () => patch({ status: 'ready', playing: true })
     const onRateChange = () => patch({ rate: element.playbackRate })

@@ -12,6 +12,8 @@ export interface ControlBarProps {
   onFullscreen: () => void
   onPictureInPicture: () => void
   canPictureInPicture: boolean
+  /** When set, shows a download control that saves the current file. */
+  downloadUrl?: string
 }
 
 export default function ControlBar({
@@ -20,6 +22,7 @@ export default function ControlBar({
   onFullscreen,
   onPictureInPicture,
   canPictureInPicture,
+  downloadUrl,
 }: ControlBarProps) {
   return (
     <div className={styles.bar}>
@@ -66,6 +69,19 @@ export default function ControlBar({
             ))}
           </select>
         </label>
+
+        {downloadUrl !== undefined && (
+          <a
+            className={styles.icon}
+            href={downloadUrl}
+            download
+            target="_blank"
+            rel="noreferrer"
+            aria-label="Download"
+          >
+            ⭳
+          </a>
+        )}
 
         {canPictureInPicture && (
           <button

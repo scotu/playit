@@ -11,9 +11,21 @@ import styles from './Player.module.css'
 export interface PlayerProps {
   media: ResolvedMedia
   startAt?: number
+  /** 'fullscreen' fills the viewport; 'paned' fills its grid cell (sidebar layout). */
+  layout?: 'fullscreen' | 'paned'
+  /** Called when the track finishes — used to advance a playlist. */
+  onEnded?: () => void
+  /** When set, the control bar shows a download control for this file. */
+  downloadUrl?: string
 }
 
-export default function Player({ media, startAt }: PlayerProps) {
+export default function Player({
+  media,
+  startAt,
+  layout = 'fullscreen',
+  onEnded,
+  downloadUrl,
+}: PlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const shellRef = useRef<HTMLDivElement>(null)
   const [pipAvailable] = useState(() => document.pictureInPictureEnabled === true)
@@ -21,6 +33,7 @@ export default function Player({ media, startAt }: PlayerProps) {
   const { state, actions } = useMediaElement(videoRef, {
     startAt,
     adapterId: media.adapterId,
+    onEnded,
   })
 
   const chromeActive = state.playing && state.status !== 'error'
@@ -60,7 +73,7 @@ export default function Player({ media, startAt }: PlayerProps) {
   return (
     <div
       ref={shellRef}
-      className={`${styles.shell} ${visible ? '' : styles.idle}`}
+      className={`${styles.shell} ${layout === 'paned' ? styles.paned : ''} ${visible ? '' : styles.idle}`}
       onPointerMove={notifyActivity}
       onPointerDown={notifyActivity}
       data-testid="player"
@@ -102,6 +115,7 @@ export default function Player({ media, startAt }: PlayerProps) {
             onFullscreen={onFullscreen}
             onPictureInPicture={onPictureInPicture}
             canPictureInPicture={pipAvailable && !isAudio}
+            downloadUrl={downloadUrl}
           />
         </div>
       )}

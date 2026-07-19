@@ -1,4 +1,4 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
 import { MemoryRouter } from 'react-router'
 import Player from './Player'
@@ -85,5 +85,35 @@ describe('Player', () => {
       screen.getByRole('button', { name: 'Play' }).click()
     })
     expect(video().play).toHaveBeenCalled()
+  })
+
+  it('shows a download control only when a download url is given', () => {
+    const { rerender } = render(
+      <MemoryRouter>
+        <Player media={MEDIA} />
+      </MemoryRouter>,
+    )
+    expect(screen.queryByRole('link', { name: /download/i })).not.toBeInTheDocument()
+
+    rerender(
+      <MemoryRouter>
+        <Player media={MEDIA} downloadUrl="https://proxy.test/d/abc" />
+      </MemoryRouter>,
+    )
+    expect(screen.getByRole('link', { name: /download/i })).toHaveAttribute(
+      'href',
+      'https://proxy.test/d/abc',
+    )
+  })
+
+  it('advances via onEnded when the track finishes', () => {
+    const onEnded = vi.fn()
+    render(
+      <MemoryRouter>
+        <Player media={MEDIA} onEnded={onEnded} />
+      </MemoryRouter>,
+    )
+    emit(video(), 'ended')
+    expect(onEnded).toHaveBeenCalledOnce()
   })
 })
