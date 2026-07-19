@@ -1,0 +1,54 @@
+.stage {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-2);
+  height: 100%;
+  padding: var(--space-4);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 1.4rem;
+}
+
+.detail {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.hint {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  opacity: 0.8;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  justify-content: center;
+  margin-top: var(--space-3);
+}
+
+.primary {
+  padding: var(--space-2) var(--space-4);
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+
+.secondary {
+  padding: var(--space-2) var(--space-4);
+  color: var(--text);
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+}

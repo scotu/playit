@@ -1,0 +1,60 @@
+.wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 20px;
+}
+
+.track {
+  position: absolute;
+  inset-inline: 0;
+  height: 4px;
+  overflow: hidden;
+  background: var(--surface-strong);
+  border-radius: 999px;
+}
+
+.buffered,
+.played {
+  position: absolute;
+  inset-block: 0;
+  left: 0;
+}
+
+.buffered {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.played {
+  background: var(--accent);
+}
+
+.input {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  background: transparent;
+  appearance: none;
+  cursor: pointer;
+}
+
+.input::-webkit-slider-thumb {
+  width: 13px;
+  height: 13px;
+  background: var(--text);
+  border-radius: 50%;
+  appearance: none;
+}
+
+.input::-moz-range-thumb {
+  width: 13px;
+  height: 13px;
+  background: var(--text);
+  border: none;
+  border-radius: 50%;
+}
+
+.input:disabled {
+  cursor: default;
+  opacity: 0.4;
+}

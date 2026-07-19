@@ -1,0 +1,45 @@
+.stage {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: var(--space-4);
+  height: 100%;
+}
+
+.art {
+  display: grid;
+  place-items: center;
+  width: min(46vmin, 320px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle at 30% 25%, #23232b, #0d0d10 70%);
+  border-radius: 50%;
+  box-shadow: 0 40px 120px rgba(110, 231, 240, 0.12);
+}
+
+.pulsing {
+  animation: breathe 4s var(--ease-out) infinite;
+}
+
+.disc {
+  width: 18%;
+  aspect-ratio: 1;
+  background: var(--bg);
+  border: 1px solid var(--surface-strong);
+  border-radius: 50%;
+}
+
+.title {
+  margin: 0;
+  color: var(--text-dim);
+  font-size: 0.95rem;
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+}
