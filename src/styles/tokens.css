@@ -1,0 +1,26 @@
+:root {
+  --bg: #08080a;
+  --bg-raised: #131317;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.12);
+  --text: #f4f4f6;
+  --text-dim: #a1a1aa;
+  --accent: #6ee7f0;
+  --danger: #f87171;
+
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 40px;
+
+  --font: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-numeric: ui-monospace, 'SF Mono', Menlo, monospace;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --chrome-fade: 240ms var(--ease-out);
+}
