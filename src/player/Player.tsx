@@ -82,10 +82,16 @@ export default function Player({ media, startAt }: PlayerProps) {
         onClick={actions.toggle}
       />
 
-      {isAudio && !failed && <AudioStage title={media.title} playing={state.playing} />}
+      {isAudio && !failed && (
+        <div className={styles.stage}>
+          <AudioStage title={media.title} playing={state.playing} />
+        </div>
+      )}
 
       {failed && state.problem !== null && (
-        <ErrorStage problem={state.problem} sourceUrl={media.sourceUrl} onRetry={actions.retry} />
+        <div className={styles.stage}>
+          <ErrorStage problem={state.problem} sourceUrl={media.sourceUrl} onRetry={actions.retry} />
+        </div>
       )}
 
       {!failed && (

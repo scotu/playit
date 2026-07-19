@@ -19,6 +19,15 @@
   background: #000;
 }
 
+/*
+  Stages share the video's cell rather than being auto-placed into the control
+  row, so they fill the shell and centre against it.
+*/
+.stage {
+  grid-area: 1 / 1 / 3 / 2;
+  min-height: 0;
+}
+
 .hidden {
   /*
     Kept in the tree and playing — only removed from view. Unmounting it would
