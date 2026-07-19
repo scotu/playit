@@ -52,6 +52,14 @@ Implement `SourceAdapter` from `src/sources/types.ts` and register it in
 `src/sources/registry.ts`. Adapters are tried in order; the first to claim an
 input wins. Nothing else in the app needs to change.
 
+## Updates
+
+The service worker runs in `prompt` mode: when a new build is deployed, returning
+visitors see a small "A new version is available" toast with a **Reload** button
+that activates the update and refreshes the page — no manual hard refresh or cache
+clearing. The wiring is in `src/pwa/` (`PwaUpdater` bridges vite-plugin-pwa's
+`useRegisterSW` to the presentational `UpdatePrompt`).
+
 ## Keyboard shortcuts
 
 | Key | Action |
