@@ -1,0 +1,32 @@
+.screen {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: var(--space-4);
+}
+
+.pending {
+  color: var(--text-dim);
+}
+
+.problem {
+  width: min(520px, 100%);
+  text-align: center;
+}
+
+.problemTitle {
+  margin: 0 0 var(--space-2);
+  font-size: 1.5rem;
+}
+
+.problemDetail {
+  margin: 0 0 var(--space-4);
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+.back {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}

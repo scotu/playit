@@ -1,0 +1,64 @@
+.screen {
+  display: grid;
+  place-items: center;
+  min-height: 100%;
+  padding: var(--space-4);
+}
+
+.panel {
+  width: min(560px, 100%);
+  text-align: center;
+}
+
+.title {
+  margin: 0;
+  font-size: 2.5rem;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  margin: var(--space-2) 0 var(--space-4);
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+
+.form {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.input {
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3);
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--surface-strong);
+  border-radius: var(--radius-md);
+  font: inherit;
+}
+
+.input::placeholder {
+  color: var(--text-dim);
+}
+
+.submit {
+  padding: var(--space-3) var(--space-4);
+  color: var(--bg);
+  background: var(--accent);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  transition: opacity var(--chrome-fade);
+}
+
+.submit:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.error {
+  margin-top: var(--space-3);
+  color: var(--danger);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
