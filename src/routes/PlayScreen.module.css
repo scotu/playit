@@ -30,3 +30,26 @@
   text-decoration: none;
   border-bottom: 1px solid currentColor;
 }
+
+/* Browse mode: the folder list fills the width. */
+.browse {
+  width: min(760px, 100%);
+  height: 100dvh;
+  margin: 0 auto;
+  padding: var(--space-3) var(--space-2);
+}
+
+/* Playing mode: player beside the collapsible playlist sidebar. */
+.paned {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.stage {
+  min-width: 0;
+  min-height: 0;
+}
+
