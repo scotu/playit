@@ -2,12 +2,8 @@ import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useNavigate } from 'react-router'
 import { canResolve } from '../sources/registry'
+import { buildPlayUrl } from './playUrl'
 import styles from './HomeScreen.module.css'
-
-/** Builds the shareable deep link for a source. */
-export function buildPlayUrl(src: string): string {
-  return `/play?src=${encodeURIComponent(src.trim())}`
-}
 
 export default function HomeScreen() {
   const [value, setValue] = useState('')
