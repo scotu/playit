@@ -24,7 +24,8 @@ export default function HomeScreen() {
       <div className={styles.panel}>
         <h1 className={styles.title}>playit</h1>
         <p className={styles.subtitle}>
-          Paste a Google Drive link to an audio or video file shared with anyone who has the link.
+          Paste a Google Drive link — a single audio or video file, or a whole folder — shared with
+          anyone who has the link.
         </p>
 
         <form className={styles.form} onSubmit={onSubmit}>

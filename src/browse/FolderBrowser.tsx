@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { ChevronRight } from 'lucide-react'
 import { listDriveFolder } from '../sources/googleDriveFolder'
 import FolderEntryRow from './FolderEntryRow'
 import type { FolderEntry } from '../sources/types'
@@ -67,9 +68,7 @@ export default function FolderBrowser({
                   <button type="button" className={styles.crumbLink} onClick={() => onCrumb(index)}>
                     {crumb.name}
                   </button>
-                  <span className={styles.crumbSep} aria-hidden="true">
-                    ›
-                  </span>
+                  <ChevronRight className={styles.crumbSep} aria-hidden="true" />
                 </>
               )}
             </span>

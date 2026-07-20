@@ -17,6 +17,8 @@ export interface PlayerProps {
   onEnded?: () => void
   /** When set, the control bar shows a download control for this file. */
   downloadUrl?: string
+  /** When set, the control bar shows a button that opens the playlist (mobile). */
+  onTogglePlaylist?: () => void
 }
 
 export default function Player({
@@ -25,6 +27,7 @@ export default function Player({
   layout = 'fullscreen',
   onEnded,
   downloadUrl,
+  onTogglePlaylist,
 }: PlayerProps) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const shellRef = useRef<HTMLDivElement>(null)
@@ -116,6 +119,7 @@ export default function Player({
             onPictureInPicture={onPictureInPicture}
             canPictureInPicture={pipAvailable && !isAudio}
             downloadUrl={downloadUrl}
+            onTogglePlaylist={onTogglePlaylist}
           />
         </div>
       )}

@@ -53,3 +53,9 @@
   min-height: 0;
 }
 
+/* Mobile playing mode: the player owns the whole screen; the playlist is a
+   bottom sheet layered on top. */
+.stageFull {
+  height: 100dvh;
+}
+

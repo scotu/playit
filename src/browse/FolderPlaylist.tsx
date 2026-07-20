@@ -3,9 +3,11 @@ import { useSearchParams } from 'react-router'
 import { getDriveProxyBase } from '../config'
 import { listDriveFolder } from '../sources/googleDriveFolder'
 import { usePlaylist } from './usePlaylist'
+import { useIsMobile } from './useIsMobile'
 import FolderBrowser from './FolderBrowser'
 import type { Crumb } from './FolderBrowser'
 import PlaylistSidebar from './PlaylistSidebar'
+import PlaylistSheet from './PlaylistSheet'
 import Player from '../player/Player'
 import type { FolderEntry, ResolvedMedia } from '../sources/types'
 import styles from '../routes/PlayScreen.module.css'
@@ -62,6 +64,8 @@ export default function FolderPlaylist({ rootFolderId }: FolderPlaylistProps) {
 
   const [queueFolderId, setQueueFolderId] = useState<string>(shownFolderId)
   const [queueEntries, setQueueEntries] = useState<FolderEntry[]>([])
+  const isMobile = useIsMobile()
+  const [sheetOpen, setSheetOpen] = useState(false)
 
   useEffect(() => {
     if (item === undefined) return
@@ -141,6 +145,29 @@ export default function FolderPlaylist({ rootFolderId }: FolderPlaylistProps) {
     return <div className={styles.browse}>{browser}</div>
   }
 
+  const currentName = path[path.length - 1]?.name
+
+  // Mobile: player fills the screen; the playlist is a bottom sheet opened from
+  // the control bar.
+  if (isMobile) {
+    return (
+      <div className={styles.stageFull}>
+        <Player
+          key={media.streamUrl}
+          media={media}
+          layout="fullscreen"
+          onEnded={goNext}
+          downloadUrl={media.streamUrl}
+          onTogglePlaylist={() => setSheetOpen(true)}
+        />
+        <PlaylistSheet open={sheetOpen} title={currentName} onClose={() => setSheetOpen(false)}>
+          {browser}
+        </PlaylistSheet>
+      </div>
+    )
+  }
+
+  // Desktop: player beside the docked, collapsible playlist.
   return (
     <div className={styles.paned}>
       <div className={styles.stage}>
@@ -152,7 +179,7 @@ export default function FolderPlaylist({ rootFolderId }: FolderPlaylistProps) {
           downloadUrl={media.streamUrl}
         />
       </div>
-      <PlaylistSidebar title={path[path.length - 1]?.name}>{browser}</PlaylistSidebar>
+      <PlaylistSidebar title={currentName}>{browser}</PlaylistSidebar>
     </div>
   )
 }

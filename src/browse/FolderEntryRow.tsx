@@ -1,3 +1,5 @@
+import { ChevronRight, ExternalLink, File, Film, Folder, Music } from 'lucide-react'
+import type { ComponentType } from 'react'
 import DownloadButton from './DownloadButton'
 import type { FolderEntry } from '../sources/types'
 import styles from './FolderEntryRow.module.css'
@@ -15,15 +17,15 @@ function isGoogleNative(entry: FolderEntry): boolean {
   return entry.kind === 'file' && (entry.mimeType?.startsWith('application/vnd.google-apps.') ?? false)
 }
 
-function iconFor(entry: FolderEntry): string {
-  if (entry.kind === 'folder') return '📁'
-  if (entry.playable) return entry.mimeType?.startsWith('video/') ? '🎬' : '🎵'
-  if (isGoogleNative(entry)) return '📄'
-  return '📄'
+function iconFor(entry: FolderEntry): ComponentType<{ className?: string }> {
+  if (entry.kind === 'folder') return Folder
+  if (entry.playable) return entry.mimeType?.startsWith('video/') ? Film : Music
+  return File
 }
 
 export default function FolderEntryRow({ entry, onEnter, onPlay, active = false }: FolderEntryRowProps) {
-  const icon = <span className={styles.icon} aria-hidden="true">{iconFor(entry)}</span>
+  const Icon = iconFor(entry)
+  const icon = <Icon className={styles.icon} aria-hidden="true" />
 
   if (entry.kind === 'folder') {
     return (
@@ -31,7 +33,7 @@ export default function FolderEntryRow({ entry, onEnter, onPlay, active = false 
         <button type="button" className={styles.main} onClick={() => onEnter(entry)}>
           {icon}
           <span className={styles.name}>{entry.name}</span>
-          <span className={styles.chevron} aria-hidden="true">›</span>
+          <ChevronRight className={styles.chevron} aria-hidden="true" />
         </button>
       </div>
     )
@@ -68,7 +70,8 @@ export default function FolderEntryRow({ entry, onEnter, onPlay, active = false 
             rel="noreferrer"
             aria-label={`Open ${entry.name} in Google Drive`}
           >
-            Open in Drive
+            <ExternalLink className={styles.openGlyph} aria-hidden="true" />
+            <span className={styles.openLabel}>Open in Drive</span>
           </a>
         ) : (
           <DownloadButton id={entry.id} name={entry.name} iconOnly />

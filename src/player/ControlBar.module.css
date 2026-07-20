@@ -1,13 +1,13 @@
 .bar {
   display: grid;
   gap: var(--space-2);
-  padding: var(--space-4) var(--space-3) var(--space-3);
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8) 45%);
+  padding: var(--space-5) var(--space-3) max(var(--space-3), env(safe-area-inset-bottom));
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.85) 40%);
 }
 
 .row {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-2);
   align-items: center;
 }
 
@@ -16,8 +16,22 @@
 }
 
 .play {
-  min-width: 2.25rem;
-  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text);
+  border-radius: 999px;
+}
+
+.play:hover {
+  background: var(--surface);
+}
+
+.playGlyph {
+  width: 24px;
+  height: 24px;
 }
 
 .time {
@@ -25,13 +39,31 @@
   font-family: var(--font-numeric);
   font-size: 0.85rem;
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
 .icon {
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: var(--text-dim);
+  border-radius: var(--radius-sm);
+}
+
+.icon:hover {
+  color: var(--text);
+  background: var(--surface);
+}
+
+.glyph {
+  width: 20px;
+  height: 20px;
 }
 
 .rate select {
+  min-height: 40px;
   padding: var(--space-1) var(--space-2);
   color: var(--text);
   background: var(--surface);
@@ -50,9 +82,15 @@
   white-space: nowrap;
 }
 
+/* Narrow screens: let controls wrap rather than clip, and drop the least-used
+   ones (playback speed, picture-in-picture) to keep the essentials reachable. */
 @media (width <= 560px) {
-  .rate,
-  .icon {
+  .row {
+    flex-wrap: wrap;
+    gap: var(--space-1);
+  }
+
+  .rate {
     display: none;
   }
 }

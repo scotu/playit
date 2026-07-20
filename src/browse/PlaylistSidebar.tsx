@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import type { ReactNode } from 'react'
+import { PanelRightClose, PanelRightOpen } from 'lucide-react'
 import styles from './PlaylistSidebar.module.css'
 
 const STORAGE_KEY = 'playit.sidebar.collapsed'
@@ -41,7 +42,11 @@ export default function PlaylistSidebar({ title, children }: PlaylistSidebarProp
           aria-label={collapsed ? 'Show playlist' : 'Hide playlist'}
           onClick={() => setCollapsed((value) => !value)}
         >
-          <span aria-hidden="true">{collapsed ? '☰' : '⟨'}</span>
+          {collapsed ? (
+            <PanelRightOpen className={styles.toggleGlyph} aria-hidden="true" />
+          ) : (
+            <PanelRightClose className={styles.toggleGlyph} aria-hidden="true" />
+          )}
         </button>
         {!collapsed && title !== undefined && <span className={styles.title}>{title}</span>}
       </header>

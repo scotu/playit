@@ -1,8 +1,8 @@
 .button {
   display: inline-flex;
-  gap: var(--space-1);
+  gap: var(--space-2);
   align-items: center;
-  padding: var(--space-1) var(--space-2);
+  padding: var(--space-1) var(--space-3);
   color: var(--text-dim);
   background: var(--surface);
   border-radius: var(--radius-sm);
@@ -16,8 +16,22 @@
 }
 
 .icon {
-  padding: var(--space-1);
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 0;
+  background: transparent;
+}
+
+.icon:hover {
+  background: var(--surface);
+}
+
+.glyph {
+  width: 18px;
+  height: 18px;
 }
 
 .label {

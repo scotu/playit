@@ -21,6 +21,22 @@ if (typeof globalThis.localStorage === 'undefined') {
   })
 }
 
+// jsdom does not implement matchMedia. Default every query to "no match" so
+// responsive hooks resolve to the desktop layout under test.
+if (typeof window !== 'undefined' && typeof window.matchMedia === 'undefined') {
+  window.matchMedia = (query: string) =>
+    ({
+      matches: false,
+      media: query,
+      onchange: null,
+      addEventListener: () => {},
+      removeEventListener: () => {},
+      addListener: () => {},
+      removeListener: () => {},
+      dispatchEvent: () => false,
+    }) as MediaQueryList
+}
+
 // The Drive adapter does a best-effort meta fetch during resolve. Default it to a
 // harmless stub so tests that resolve a source don't touch the network; tests
 // that care about metadata override global fetch themselves.

@@ -35,6 +35,8 @@
 }
 
 .crumbSep {
+  width: 15px;
+  height: 15px;
   color: var(--text-dim);
   opacity: 0.6;
 }

@@ -20,14 +20,23 @@
 }
 
 .toggle {
-  padding: var(--space-1) var(--space-2);
-  color: var(--text);
-  font-size: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 40px;
+  min-height: 40px;
+  color: var(--text-dim);
   border-radius: var(--radius-sm);
 }
 
 .toggle:hover {
+  color: var(--text);
   background: var(--surface);
+}
+
+.toggleGlyph {
+  width: 20px;
+  height: 20px;
 }
 
 .title {
@@ -41,15 +50,4 @@
   flex: 1;
   min-height: 0;
   overflow: hidden;
-}
-
-@media (width <= 720px) {
-  .sidebar:not(.collapsed) {
-    position: absolute;
-    inset: 0 0 auto auto;
-    z-index: 5;
-    width: min(320px, 90vw);
-    height: 100%;
-    box-shadow: -12px 0 40px rgba(0, 0, 0, 0.5);
-  }
 }

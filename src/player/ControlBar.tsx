@@ -1,3 +1,4 @@
+import { Download, ListMusic, Maximize, Pause, PictureInPicture2, Play } from 'lucide-react'
 import SeekBar from './SeekBar'
 import VolumeControl from './VolumeControl'
 import { formatTime } from '../media/formatTime'
@@ -14,6 +15,8 @@ export interface ControlBarProps {
   canPictureInPicture: boolean
   /** When set, shows a download control that saves the current file. */
   downloadUrl?: string
+  /** When set, shows a button that opens the playlist (used on mobile). */
+  onTogglePlaylist?: () => void
 }
 
 export default function ControlBar({
@@ -23,6 +26,7 @@ export default function ControlBar({
   onPictureInPicture,
   canPictureInPicture,
   downloadUrl,
+  onTogglePlaylist,
 }: ControlBarProps) {
   return (
     <div className={styles.bar}>
@@ -40,7 +44,11 @@ export default function ControlBar({
           onClick={actions.toggle}
           aria-label={state.playing ? 'Pause' : 'Play'}
         >
-          {state.playing ? '❚❚' : '▶'}
+          {state.playing ? (
+            <Pause className={styles.playGlyph} aria-hidden="true" />
+          ) : (
+            <Play className={styles.playGlyph} aria-hidden="true" />
+          )}
         </button>
 
         <span className={styles.time}>
@@ -58,10 +66,7 @@ export default function ControlBar({
 
         <label className={styles.rate}>
           <span className={styles.visuallyHidden}>Playback speed</span>
-          <select
-            value={state.rate}
-            onChange={(event) => actions.setRate(Number(event.target.value))}
-          >
+          <select value={state.rate} onChange={(event) => actions.setRate(Number(event.target.value))}>
             {RATES.map((rate) => (
               <option key={rate} value={rate}>
                 {rate}×
@@ -79,7 +84,7 @@ export default function ControlBar({
             rel="noreferrer"
             aria-label="Download"
           >
-            ⭳
+            <Download className={styles.glyph} aria-hidden="true" />
           </a>
         )}
 
@@ -90,13 +95,24 @@ export default function ControlBar({
             onClick={onPictureInPicture}
             aria-label="Picture in picture"
           >
-            ⧉
+            <PictureInPicture2 className={styles.glyph} aria-hidden="true" />
           </button>
         )}
 
         <button type="button" className={styles.icon} onClick={onFullscreen} aria-label="Fullscreen">
-          ⛶
+          <Maximize className={styles.glyph} aria-hidden="true" />
         </button>
+
+        {onTogglePlaylist !== undefined && (
+          <button
+            type="button"
+            className={`${styles.icon} ${styles.playlistToggle}`}
+            onClick={onTogglePlaylist}
+            aria-label="Show playlist"
+          >
+            <ListMusic className={styles.glyph} aria-hidden="true" />
+          </button>
+        )}
       </div>
     </div>
   )

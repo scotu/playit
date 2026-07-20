@@ -1,3 +1,4 @@
+import { Volume1, Volume2, VolumeX } from 'lucide-react'
 import styles from './VolumeControl.module.css'
 
 export interface VolumeControlProps {
@@ -14,6 +15,7 @@ export default function VolumeControl({
   onToggleMute,
 }: VolumeControlProps) {
   const effective = muted ? 0 : volume
+  const VolumeIcon = effective === 0 ? VolumeX : effective < 0.5 ? Volume1 : Volume2
   return (
     <div className={styles.wrapper}>
       <button
@@ -22,7 +24,7 @@ export default function VolumeControl({
         onClick={onToggleMute}
         aria-label={muted ? 'Unmute' : 'Mute'}
       >
-        {effective === 0 ? '🔇' : effective < 0.5 ? '🔉' : '🔊'}
+        <VolumeIcon className={styles.glyph} aria-hidden="true" />
       </button>
       <input
         className={styles.slider}

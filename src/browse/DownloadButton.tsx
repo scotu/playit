@@ -1,3 +1,4 @@
+import { Download } from 'lucide-react'
 import { getDriveProxyBase } from '../config'
 import styles from './DownloadButton.module.css'
 
@@ -28,7 +29,7 @@ export default function DownloadButton({ id, name, iconOnly = false }: DownloadB
       target="_blank"
       rel="noreferrer"
     >
-      <span aria-hidden="true">⭳</span>
+      <Download className={styles.glyph} aria-hidden="true" />
       {!iconOnly && <span className={styles.label}>Download</span>}
     </a>
   )
