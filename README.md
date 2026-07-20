@@ -14,6 +14,21 @@ https://<user>.github.io/playit/#/play?src=<url-encoded drive link>
 
 Add `&t=90` to start 90 seconds in.
 
+## Playing a folder
+
+Pass a Drive **folder** link (shared "anyone with the link") instead of a file:
+
+```
+https://<user>.github.io/playit/#/play?src=<url-encoded drive folder link>
+```
+
+The folder's files and subfolders are listed full width. Playable audio/video
+files play; when one finishes the next playable file in that folder plays
+automatically. Subfolders are subplaylists — open one to see and play its
+contents. Every file has a **download** action (even non-playable ones); Google
+Docs/Sheets/Slides link out to Drive instead. While a track plays, the list
+becomes a collapsible sidebar; the single-file player also has a download button.
+
 ## The proxy is required
 
 Playback needs the companion Cloudflare Worker in [`worker/`](worker/), and the

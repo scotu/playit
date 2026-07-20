@@ -19,9 +19,18 @@ CORP-free headers, passing Range requests through so seeking still works.
 | --- | --- |
 | `GET /d/{fileId}` | The file bytes, with CORS + Range passthrough |
 | `GET /meta/{fileId}` | `{ title, mimeType, size }` JSON (filename from Drive) |
+| `GET /list/{folderId}` | `{ entries: [{ id, name, kind, mimeType, playable }] }` for a public folder |
 
-`{fileId}` is the Google Drive file id (the part between `/d/` and `/view` in a
-share link).
+`{fileId}`/`{folderId}` are the ids from a Drive share link.
+
+### Folder listing strategy
+
+`/list` today scrapes Google's keyless `embeddedfolderview` page server-side
+(mirroring the keyless streaming path). `selectFolderLister(env)` in
+`src/folderListing.ts` is the seam for a future Drive-API lister: when a
+`GOOGLE_API_KEY` secret is set (`npx wrangler secret put GOOGLE_API_KEY`), that
+lister should be returned there and take precedence. It is intentionally not
+implemented yet.
 
 ## Deploy
 
