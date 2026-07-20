@@ -19,6 +19,24 @@
 
 .message {
   font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+/* Narrow screens: become a rounded card and wrap the actions below the message
+   instead of crushing the text into a sliver. */
+@media (width <= 480px) {
+  .toast {
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: var(--space-3);
+    border-radius: var(--radius-lg);
+  }
+
+  .message {
+    flex-basis: 100%;
+    text-align: center;
+    white-space: normal;
+  }
 }
 
 .actions {

@@ -15,7 +15,7 @@ export default function UpdatePrompt({ visible, onReload, onDismiss }: UpdatePro
 
   return (
     <div className={styles.toast} role="status" aria-live="polite">
-      <span className={styles.message}>A new version of playit is available.</span>
+      <span className={styles.message}>A new version is available.</span>
       <div className={styles.actions}>
         <button type="button" className={styles.reload} onClick={onReload}>
           Reload
